@@ -28,9 +28,9 @@ class MinimalistTemplate extends StatelessWidget {
   final Resume resume;
 
   const MinimalistTemplate({
-    Key? key,
+    super.key,
     required this.resume,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -243,9 +243,9 @@ class ModernTemplate extends StatelessWidget {
   final Resume resume;
 
   const ModernTemplate({
-    Key? key,
+    super.key,
     required this.resume,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -280,9 +280,9 @@ class ModernTemplate extends StatelessWidget {
                   ),
                 const SizedBox(height: 20),
                 // Contact Info
-                Text(
+                const Text(
                   'CONTACT',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
                     letterSpacing: 1,
@@ -315,9 +315,9 @@ class ModernTemplate extends StatelessWidget {
                 const SizedBox(height: 24),
                 // Skills
                 if (resume.skills.isNotEmpty) ...[
-                  Text(
+                  const Text(
                     'SKILLS',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 11,
                       letterSpacing: 1,
@@ -497,9 +497,9 @@ class ProfessionalTemplate extends StatelessWidget {
   final Resume resume;
 
   const ProfessionalTemplate({
-    Key? key,
+    super.key,
     required this.resume,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -714,9 +714,9 @@ class CreativeTemplate extends StatelessWidget {
   final Resume resume;
 
   const CreativeTemplate({
-    Key? key,
+    super.key,
     required this.resume,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -6,9 +6,9 @@ class UploadedResumeAnalysisScreen extends StatefulWidget {
   final Resume uploadedResume;
 
   const UploadedResumeAnalysisScreen({
-    Key? key,
+    super.key,
     required this.uploadedResume,
-  }) : super(key: key);
+  });
 
   @override
   State<UploadedResumeAnalysisScreen> createState() =>
@@ -153,9 +153,7 @@ class _UploadedResumeAnalysisScreenState
           ),
         ),
         const SizedBox(height: 16),
-        ..._checkResults
-            .map((result) => _buildCheckResultCard(result))
-            .toList(),
+        ..._checkResults.map((result) => _buildCheckResultCard(result)),
       ],
     );
   }
@@ -181,7 +179,7 @@ class _UploadedResumeAnalysisScreenState
               ),
               child: Center(
                 child: Text(
-                  '${result.score.toStringAsFixed(0)}',
+                  result.score.toStringAsFixed(0),
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -354,14 +352,18 @@ class _UploadedResumeAnalysisScreenState
   }
 
   String _getPerformanceLevelDescription(double score) {
-    if (score >= 90)
+    if (score >= 90) {
       return 'Your resume is ATS-optimized and highly competitive!';
-    if (score >= 80)
+    }
+    if (score >= 80) {
       return 'Your resume is well-structured. Minor improvements recommended.';
-    if (score >= 70)
+    }
+    if (score >= 70) {
       return 'Your resume has good potential. Consider the suggestions.';
-    if (score >= 60)
+    }
+    if (score >= 60) {
       return 'Your resume needs some adjustments for better ATS compatibility.';
+    }
     return 'Your resume needs significant improvements to be competitive.';
   }
 }

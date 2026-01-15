@@ -4,7 +4,7 @@ import '../../providers/resume_provider.dart';
 import '../../services/ai_resume_checker.dart';
 
 class AIResumeCheckerScreen extends StatefulWidget {
-  const AIResumeCheckerScreen({Key? key}) : super(key: key);
+  const AIResumeCheckerScreen({super.key});
 
   @override
   State<AIResumeCheckerScreen> createState() => _AIResumeCheckerScreenState();
@@ -60,7 +60,7 @@ class _AIResumeCheckerScreenState extends State<AIResumeCheckerScreen> {
                 final index = entry.key + 1;
                 final result = entry.value;
                 return _buildCheckResultCard(context, index, result);
-              }).toList(),
+              }),
 
               const SizedBox(height: 32),
 
@@ -146,7 +146,7 @@ class _AIResumeCheckerScreenState extends State<AIResumeCheckerScreen> {
                   ),
                   child: Center(
                     child: Text(
-                      '${score.toStringAsFixed(0)}',
+                      score.toStringAsFixed(0),
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
@@ -386,14 +386,18 @@ class _AIResumeCheckerScreenState extends State<AIResumeCheckerScreen> {
   }
 
   String _getPerformanceLevelMessage(double score) {
-    if (score >= 90)
+    if (score >= 90) {
       return 'Your resume is in excellent shape! Ready for top companies.';
-    if (score >= 80)
+    }
+    if (score >= 80) {
       return 'Your resume is strong and likely to get callbacks.';
-    if (score >= 70)
+    }
+    if (score >= 70) {
       return 'Your resume is good. Consider addressing highlighted areas.';
-    if (score >= 60)
+    }
+    if (score >= 60) {
       return 'Your resume needs improvement. Focus on weak areas.';
+    }
     return 'Your resume needs significant work. Address all recommendations.';
   }
 

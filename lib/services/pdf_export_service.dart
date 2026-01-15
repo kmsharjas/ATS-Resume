@@ -135,7 +135,7 @@ class PDFExportService {
                 ],
               ),
             );
-          }).toList(),
+          }),
           pw.SizedBox(height: 12),
         ],
       );

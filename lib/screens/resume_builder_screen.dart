@@ -7,7 +7,7 @@ import 'resume_steps/skills_step.dart';
 import 'resume_steps/review_step.dart';
 
 class ResumeBuilderScreen extends StatefulWidget {
-  const ResumeBuilderScreen({Key? key}) : super(key: key);
+  const ResumeBuilderScreen({super.key});
 
   @override
   State<ResumeBuilderScreen> createState() => _ResumeBuilderScreenState();
@@ -254,7 +254,7 @@ class _ResumeBuilderScreenState extends State<ResumeBuilderScreen> {
                 ),
                 child: Center(
                   child: isCompleted
-                      ? Icon(
+                      ? const Icon(
                           Icons.check,
                           size: 16,
                           color: Colors.white,

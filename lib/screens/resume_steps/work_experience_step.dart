@@ -4,7 +4,7 @@ import '../../providers/resume_provider.dart';
 import '../../models/resume_model.dart';
 
 class WorkExperienceStep extends StatefulWidget {
-  const WorkExperienceStep({Key? key}) : super(key: key);
+  const WorkExperienceStep({super.key});
 
   @override
   State<WorkExperienceStep> createState() => _WorkExperienceStepState();

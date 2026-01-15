@@ -4,7 +4,7 @@ import '../../providers/resume_provider.dart';
 import '../../services/content_suggestions.dart';
 
 class SummaryStep extends StatefulWidget {
-  const SummaryStep({Key? key}) : super(key: key);
+  const SummaryStep({super.key});
 
   @override
   State<SummaryStep> createState() => _SummaryStepState();

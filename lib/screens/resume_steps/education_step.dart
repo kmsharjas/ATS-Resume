@@ -4,7 +4,7 @@ import '../../providers/resume_provider.dart';
 import '../../models/resume_model.dart';
 
 class EducationStep extends StatefulWidget {
-  const EducationStep({Key? key}) : super(key: key);
+  const EducationStep({super.key});
 
   @override
   State<EducationStep> createState() => _EducationStepState();

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'dart:html' as html;
+import 'package:file_picker/file_picker.dart';
+import 'dart:convert';
 import '../../providers/resume_provider.dart';
 import '../../models/resume_model.dart';
 
 class ContactInfoStep extends StatefulWidget {
-  const ContactInfoStep({Key? key}) : super(key: key);
+  const ContactInfoStep({super.key});
 
   @override
   State<ContactInfoStep> createState() => _ContactInfoStepState();
@@ -47,25 +48,22 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
   }
 
   Future<void> _pickPhoto() async {
-    final input = html.FileUploadInputElement()..accept = 'image/*';
-    input.click();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
-    input.onChange.listen((e) {
-      final files = input.files;
-      if (files!.isNotEmpty) {
-        final file = files[0];
-        final reader = html.FileReader();
-        reader.onLoad.listen((e) {
-          if (reader.result is String) {
-            setState(() {
-              _photoBase64 = reader.result as String?;
-              _updateContactInfo();
-            });
-          }
+    if (result != null && result.files.isNotEmpty) {
+      final file = result.files.first;
+      final bytes = file.bytes;
+
+      if (bytes != null) {
+        setState(() {
+          // Convert bytes to base64
+          _photoBase64 = 'data:image/png;base64,${base64Encode(bytes)}';
+          _updateContactInfo();
         });
-        reader.readAsDataUrl(file);
       }
-    });
+    }
   }
 
   void _removePhoto() {

@@ -40,6 +40,9 @@ dependencies:
   
   # UUID generation
   uuid: ^4.0.0
+  
+  # File picker for cross-platform file selection
+  file_picker: ^6.0.0
 
 dev_dependencies:
   flutter_test:

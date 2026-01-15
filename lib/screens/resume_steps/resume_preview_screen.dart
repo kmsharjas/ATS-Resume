@@ -5,7 +5,7 @@ import '../../models/resume_template.dart';
 import '../../services/resume_template_service.dart';
 
 class ResumePreviewScreen extends StatefulWidget {
-  const ResumePreviewScreen({Key? key}) : super(key: key);
+  const ResumePreviewScreen({super.key});
 
   @override
   State<ResumePreviewScreen> createState() => _ResumePreviewScreenState();

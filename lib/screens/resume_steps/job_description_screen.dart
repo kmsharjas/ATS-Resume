@@ -4,7 +4,7 @@ import '../../providers/resume_provider.dart';
 import '../../providers/job_description_provider.dart';
 
 class JobDescriptionScreen extends StatefulWidget {
-  const JobDescriptionScreen({Key? key}) : super(key: key);
+  const JobDescriptionScreen({super.key});
 
   @override
   State<JobDescriptionScreen> createState() => _JobDescriptionScreenState();

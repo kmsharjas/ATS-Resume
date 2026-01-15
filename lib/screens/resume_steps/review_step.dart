@@ -10,7 +10,7 @@ import 'resume_preview_screen.dart';
 import 'job_description_screen.dart';
 
 class ReviewStep extends StatefulWidget {
-  const ReviewStep({Key? key}) : super(key: key);
+  const ReviewStep({super.key});
 
   @override
   State<ReviewStep> createState() => _ReviewStepState();
@@ -194,7 +194,7 @@ class _ReviewStepState extends State<ReviewStep> {
                 else
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.check_circle,
                         color: Colors.green,
                         size: 20,

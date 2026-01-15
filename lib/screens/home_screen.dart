@@ -1,11 +1,11 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'resume_builder_screen.dart';
 import 'uploaded_resume_analysis_screen.dart';
 import '../services/resume_upload_parser.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -69,13 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
             // Hero Section
             Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    const Color(0xFF6200EE),
-                    const Color(0xFF3F51B5),
+                    Color(0xFF6200EE),
+                    Color(0xFF3F51B5),
                   ],
                 ),
               ),
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          const Color(0xFF6200EE)),
+                                          Color(0xFF6200EE)),
                                     ),
                                   )
                                 : const Icon(Icons.upload_file),
@@ -296,54 +296,59 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _pickAndAnalyzeResume() async {
     try {
-      final FileUploadInputElement uploadInput = FileUploadInputElement()
-        ..accept = '.pdf,.docx,.doc,.txt'
-        ..click();
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'docx', 'doc', 'txt'],
+      );
 
-      uploadInput.onChange.listen((e) async {
-        final files = uploadInput.files;
-        if (files!.isEmpty) return;
+      if (result != null && result.files.isNotEmpty) {
+        final file = result.files.first;
+        final bytes = file.bytes;
 
-        final file = files[0];
-        final reader = FileReader();
+        if (bytes == null) {
+          throw Exception('Could not read file');
+        }
 
         setState(() => _isUploadingResume = true);
 
-        reader.onLoadEnd.listen((_) async {
-          try {
-            final result = reader.result as String;
-            final cleanedText = _extractTextFromFile(result, file.name);
+        try {
+          final String fileContent;
+          if (file.name.toLowerCase().endsWith('.pdf')) {
+            // For PDF files, we'd need a PDF parsing library
+            // For now, convert bytes to string and extract text
+            fileContent = String.fromCharCodes(bytes);
+          } else {
+            fileContent = String.fromCharCodes(bytes);
+          }
 
-            final uploadedResume =
-                ResumeUploadParser.parseResumeText(cleanedText);
+          final cleanedText = _extractTextFromFile(fileContent, file.name);
+          final uploadedResume =
+              ResumeUploadParser.parseResumeText(cleanedText);
 
-            if (!mounted) return;
+          if (!mounted) return;
 
-            setState(() => _isUploadingResume = false);
+          setState(() => _isUploadingResume = false);
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => UploadedResumeAnalysisScreen(
-                  uploadedResume: uploadedResume,
-                ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => UploadedResumeAnalysisScreen(
+                uploadedResume: uploadedResume,
+              ),
+            ),
+          );
+        } catch (e) {
+          setState(() => _isUploadingResume = false);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error processing file: $e'),
+                backgroundColor: Colors.red,
               ),
             );
-          } catch (e) {
-            setState(() => _isUploadingResume = false);
-            if (mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error processing file: $e'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
           }
-        });
-
-        reader.readAsText(file);
-      });
+        }
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
