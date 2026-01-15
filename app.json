@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "name": "ATS Resume Builder",
+  "description": "Professional ATS-optimized resume builder for Flutter",
+  "author": "Your Name",
+  "repository": "https://github.com/yourusername/ats-resume",
+  "documentation": "https://github.com/yourusername/ats-resume/wiki",
+  "keywords": [
+    "flutter",
+    "resume",
+    "ats",
+    "job-search",
+    "ai-suggestions",
+    "pdf-export"
+  ],
+  "platforms": {
+    "android": {
+      "minSdk": 21,
+      "targetSdk": 34
+    },
+    "ios": {
+      "minVersion": "12.0",
+      "targetVersion": "17.0"
+    },
+    "web": {
+      "browsers": [
+        "chrome",
+        "firefox",
+        "safari",
+        "edge"
+      ]
+    }
+  },
+  "features": [
+    "ats-validation",
+    "job-analyzer",
+    "content-suggestions",
+    "live-preview",
+    "pdf-export",
+    "docx-export",
+    "multi-platform",
+    "offline-first"
+  ],
+  "standards": [
+    "ATS-Optimized",
+    "WCAG 2.1 Accessible",
+    "Material Design 3",
+    "iOS HIG Compliant"
+  ]
+}

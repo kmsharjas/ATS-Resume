@@ -1,0 +1,50 @@
+name: ats_resume
+description: "A Flutter application for creating ATS-optimized resumes with AI-powered features."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State management
+  provider: ^6.0.0
+  
+  # PDF generation
+  pdf: ^3.10.0
+  printing: ^5.10.0
+  
+  # API calls for AI features
+  http: ^1.1.0
+  
+  # Local storage
+  shared_preferences: ^2.2.0
+  sqflite: ^2.3.0
+  path: ^1.8.0
+  
+  # Date/time utilities
+  intl: ^0.19.0
+  
+  # UI enhancements
+  google_fonts: ^6.1.0
+  
+  # Keyboard handling
+  keyboard_dismisser: ^3.0.0
+  
+  # Logging
+  logger: ^2.0.0
+  
+  # UUID generation
+  uuid: ^4.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true

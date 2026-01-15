@@ -1,0 +1,19 @@
+[versions]
+flutter = "3.0.0"
+dart = "3.0.0"
+
+[environments]
+development = "http://localhost:8000"
+production = "https://api.resumebuilder.com"
+
+[ats_validation]
+min_keywords = 10
+max_summary_chars = 300
+min_skills_count = 5
+min_experience_items = 1
+
+[export]
+default_font = "Roboto"
+pdf_margin = 0.5  # inches
+docx_margin = 0.5  # inches
+max_file_size_mb = 10
