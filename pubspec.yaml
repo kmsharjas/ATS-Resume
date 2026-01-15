@@ -43,6 +43,12 @@ dependencies:
   
   # File picker for cross-platform file selection
   file_picker: ^8.0.0
+  
+  # Image picker for camera and gallery access
+  image_picker: ^1.0.0
+  
+  # Archive/ZIP support for DOCX generation
+  archive: ^4.0.7
 
 dev_dependencies:
   flutter_test:

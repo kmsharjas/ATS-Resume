@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import '../models/resume_model.dart';
@@ -61,29 +63,67 @@ class PDFExportService {
   }
 
   static pw.Widget _buildHeader(ContactInfo contact) {
-    return pw.Column(
+    final photoBytes = _extractBytesFromDataUri(contact.profilePhotoPath);
+
+    return pw.Row(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text(
-          contact.fullName,
-          style: pw.TextStyle(
-            fontSize: 24,
-            fontWeight: pw.FontWeight.bold,
+        // Photo
+        if (photoBytes != null)
+          pw.Container(
+            width: 80,
+            height: 80,
+            margin: const pw.EdgeInsets.only(right: 20),
+            child: pw.Image(
+              pw.MemoryImage(photoBytes),
+              fit: pw.BoxFit.cover,
+            ),
           ),
-        ),
-        pw.SizedBox(height: 8),
-        pw.Text(
-          [
-            contact.email,
-            contact.phone,
-            contact.location,
-            if (contact.linkedinUrl != null) contact.linkedinUrl,
-            if (contact.portfolioUrl != null) contact.portfolioUrl,
-          ].join(' | '),
-          style: const pw.TextStyle(fontSize: 10),
+        // Contact Info
+        pw.Expanded(
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                contact.fullName,
+                style: pw.TextStyle(
+                  fontSize: 24,
+                  fontWeight: pw.FontWeight.bold,
+                ),
+              ),
+              pw.SizedBox(height: 8),
+              pw.Text(
+                [
+                  contact.email,
+                  contact.phone,
+                  contact.location,
+                  if (contact.linkedinUrl != null) contact.linkedinUrl,
+                  if (contact.portfolioUrl != null) contact.portfolioUrl,
+                ].join(' | '),
+                style: const pw.TextStyle(fontSize: 10),
+              ),
+            ],
+          ),
         ),
       ],
     );
+  }
+
+  /// Extract bytes from base64 data URI
+  static Uint8List? _extractBytesFromDataUri(String? dataUri) {
+    if (dataUri == null || dataUri.isEmpty) return null;
+    try {
+      // Handle data:image/jpeg;base64,... format
+      if (dataUri.startsWith('data:')) {
+        final parts = dataUri.split(',');
+        if (parts.length == 2) {
+          return base64Decode(parts[1]);
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   static pw.Widget _buildSectionTitle(String title) {

@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 import '../models/resume_model.dart';
 import '../models/resume_template.dart';
 
 /// Service to handle rendering different resume templates
 class ResumeTemplateService {
+  /// Extract bytes from base64 data URI
+  static Uint8List? extractBytesFromDataUri(String? dataUri) {
+    if (dataUri == null || dataUri.isEmpty) return null;
+    try {
+      // Handle data:image/jpeg;base64,... format
+      if (dataUri.startsWith('data:')) {
+        final parts = dataUri.split(',');
+        if (parts.length == 2) {
+          return base64Decode(parts[1]);
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// Get template widget for preview
   static Widget getTemplatePreview(
     Resume resume,
@@ -58,9 +77,21 @@ class MinimalistTemplate extends StatelessWidget {
                           width: 1,
                         ),
                       ),
-                      child: Image.network(
-                        resume.contactInfo.profilePhotoPath!,
-                        fit: BoxFit.cover,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: ResumeTemplateService.extractBytesFromDataUri(
+                                    resume.contactInfo.profilePhotoPath) !=
+                                null
+                            ? Image.memory(
+                                ResumeTemplateService.extractBytesFromDataUri(
+                                    resume.contactInfo.profilePhotoPath)!,
+                                fit: BoxFit.cover,
+                              )
+                            : Placeholder(
+                                child: Text('Photo',
+                                    style: TextStyle(
+                                        color: Colors.grey[400], fontSize: 12)),
+                              ),
                       ),
                     ),
                   ),
@@ -273,9 +304,21 @@ class ModernTemplate extends StatelessWidget {
                         width: 1,
                       ),
                     ),
-                    child: Image.network(
-                      resume.contactInfo.profilePhotoPath!,
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: ResumeTemplateService.extractBytesFromDataUri(
+                                  resume.contactInfo.profilePhotoPath) !=
+                              null
+                          ? Image.memory(
+                              ResumeTemplateService.extractBytesFromDataUri(
+                                  resume.contactInfo.profilePhotoPath)!,
+                              fit: BoxFit.cover,
+                            )
+                          : Placeholder(
+                              child: Text('Photo',
+                                  style: TextStyle(
+                                      color: Colors.grey[400], fontSize: 12)),
+                            ),
                     ),
                   ),
                 const SizedBox(height: 20),
@@ -550,9 +593,22 @@ class ProfessionalTemplate extends StatelessWidget {
                             width: 1,
                           ),
                         ),
-                        child: Image.network(
-                          resume.contactInfo.profilePhotoPath!,
-                          fit: BoxFit.cover,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: ResumeTemplateService.extractBytesFromDataUri(
+                                      resume.contactInfo.profilePhotoPath) !=
+                                  null
+                              ? Image.memory(
+                                  ResumeTemplateService.extractBytesFromDataUri(
+                                      resume.contactInfo.profilePhotoPath)!,
+                                  fit: BoxFit.cover,
+                                )
+                              : Placeholder(
+                                  child: Text('Photo',
+                                      style: TextStyle(
+                                          color: Colors.grey[400],
+                                          fontSize: 10)),
+                                ),
                         ),
                       ),
                   ],
@@ -742,9 +798,24 @@ class CreativeTemplate extends StatelessWidget {
                         width: 3,
                       ),
                     ),
-                    child: Image.network(
-                      resume.contactInfo.profilePhotoPath!,
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: ResumeTemplateService.extractBytesFromDataUri(
+                                  resume.contactInfo.profilePhotoPath) !=
+                              null
+                          ? Image.memory(
+                              ResumeTemplateService.extractBytesFromDataUri(
+                                  resume.contactInfo.profilePhotoPath)!,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              color: Colors.grey,
+                              child: Center(
+                                child: Text('Photo',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14)),
+                              ),
+                            ),
                     ),
                   ),
                 const SizedBox(width: 32),

@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to take profile photos for your resume</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access to your photo library to upload resume photos</string>
+	<key>NSPhotoLibraryAddOnlyUsageDescription</key>
+	<string>This app needs to save photos to your photo library</string>
 </dict>
 </plist>

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
+import 'dart:typed_data';
 import '../../providers/resume_provider.dart';
 import '../../models/resume_model.dart';
 
@@ -20,6 +22,7 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
   late TextEditingController _linkedinController;
   late TextEditingController _portfolioController;
   String? _photoBase64;
+  Uint8List? _photoBytes;
 
   @override
   void initState() {
@@ -48,20 +51,86 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
   }
 
   Future<void> _pickPhoto() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Take Photo'),
+              onTap: () {
+                Navigator.pop(context);
+                _capturePhoto();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.image),
+              title: const Text('Choose from Gallery'),
+              onTap: () {
+                Navigator.pop(context);
+                _pickFromGallery();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.close),
+              title: const Text('Cancel'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
     );
+  }
 
-    if (result != null && result.files.isNotEmpty) {
-      final file = result.files.first;
-      final bytes = file.bytes;
+  Future<void> _capturePhoto() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? photo = await picker.pickImage(source: ImageSource.camera);
 
-      if (bytes != null) {
+      if (photo != null) {
+        final bytes = await photo.readAsBytes();
         setState(() {
-          // Convert bytes to base64
-          _photoBase64 = 'data:image/png;base64,${base64Encode(bytes)}';
+          _photoBytes = bytes;
+          _photoBase64 = 'data:image/jpeg;base64,${base64Encode(bytes)}';
           _updateContactInfo();
         });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error taking photo: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _pickFromGallery() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? photo = await picker.pickImage(source: ImageSource.gallery);
+
+      if (photo != null) {
+        final bytes = await photo.readAsBytes();
+        setState(() {
+          _photoBytes = bytes;
+          _photoBase64 = 'data:image/jpeg;base64,${base64Encode(bytes)}';
+          _updateContactInfo();
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error picking photo: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -69,6 +138,7 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
   void _removePhoto() {
     setState(() {
       _photoBase64 = null;
+      _photoBytes = null;
       _updateContactInfo();
     });
   }
@@ -227,7 +297,7 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
               ),
         ),
         const SizedBox(height: 16),
-        if (_photoBase64 != null)
+        if (_photoBase64 != null && _photoBytes != null)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -241,9 +311,12 @@ class _ContactInfoStepState extends State<ContactInfoStep> {
                     width: 1,
                   ),
                 ),
-                child: Image.network(
-                  _photoBase64!,
-                  fit: BoxFit.cover,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.memory(
+                    _photoBytes!,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
